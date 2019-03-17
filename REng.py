@@ -45,7 +45,7 @@ def preprocess_data(type):
 def display_gui(type):
 	window = Tk() 
 	window.title("Choose one of 3 test Users")
-	window.geometry('350x200')
+	window.geometry('350x300')
 	 
 	selected = IntVar() 
 	rad1 = Radiobutton(window,text='First', value=1, variable=selected) 
@@ -69,7 +69,7 @@ def display_gui(type):
 def display_gui_2(text_to_display):
 	window = Tk()
 	window.title("Welcome to FirstWorld")
-	window.geometry('350x200')
+	window.geometry('350x300')
 	def clicked():
 	 	messagebox.showinfo('Accuracy Report', report)
 	btn = Button(window,text='Click here', command=clicked)
@@ -79,13 +79,15 @@ def display_gui_2(text_to_display):
 
 def display_gui_3(text_to_display):
 	window = Tk() 
-	window.title("Welcome to LikeGeeks app") 
-	window.geometry('350x200') 
+	window.title("Click For Your result!") 
+	window.geometry('350x400') 
 	def clicked(): 
 	    messagebox.showinfo('YourResult!', text_to_display) 
 	btn = Button(window,text='Click here', command=clicked) 
 	btn.grid(column=0,row=0) 
 	window.mainloop()
+
+
 
 
 
@@ -135,18 +137,43 @@ if user_name == 3:
 
 
 
-lol = user_pred[0]
+value_add = user_pred[0]
 
-if lol == 0:
+if value_add == 0:
 	display_gui_3("This user will not be interested in this material")
-if lol == 1:
-	display_gui_3("This user will not be interested in this material")
+if value_add == 1:
+	display_gui_3("This user will not be interested in this material,but let's assume the user is intersted in business courses")
 
 
 #Displays model acuracy report!!
 display_gui_2(report)
 
 
+'''
+Now is the time to leverage open data
+'''
+def open_data():
+	global df1
+	df1 = pd.read_csv('OpenData.csv', encoding='latin-1')
+	df1 = pd.DataFrame(df1, columns = ['Type of Contact', 'TypeofOrganization','Name of Organization','City'])
+	df1 = df1[df1["TypeofOrganization"] == "Business and Economic Development"]
+	df1 = df1[df1["City"] == "Vancouver"]
+	df1 = pd.DataFrame(df1, columns = ['Name of Organization'])
+	print(df1.head())
+	dfToList = df1['Name of Organization'].tolist()
+	dfList = list(df1['Name of Organization'])
+	display_gui_5(dfList)
 
 
+def display_gui_5(text_to_display):
+	window = Tk()
+	window.title("Here's a list of the organizations that you might be interested in!")
+	window.geometry('350x300')
+	def clicked():
+	 	messagebox.showinfo('Hope you like it!', text_to_display)
+	btn = Button(window,text='Click here', command=clicked)
+	btn.grid(column=0,row=0)
+	window.mainloop()
 
+
+open_data()
